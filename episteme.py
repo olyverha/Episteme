@@ -54,7 +54,7 @@ if __name__ == '__main__':
     for chunk in chunks:
         count = count + 1
         prompt = open_file('prompt.txt').replace('<<SUMMARY>>', chunk)
-        prompt = prompt.encode(encoding='ASCII',errors='ignore').decode()
+        prompt = prompt.encode(encoding='ASCII', errors='ignore').decode()
         summary = gpt3_completion(prompt)
         print('\n\n\n', count, 'of', len(chunks), ' - ', summary)
         result.append(summary)
