@@ -1,0 +1,15 @@
+PROMPT:
+
+Write a concise summary of the following:
+
+
+Alice estava a começar a ficar farta de estar sentada ao lado da irmã na margem do rio e de não ter nada que fazer: já tinha dado uma olhadela, uma vez por outra, ao livro que a irmã estava a ler, mas este não tinha ilustrações nem diálogos. "E para que serve um livro,", pensou ela, "se não tem bonecos nem diálogos?"   Por isso ela estava a tentar decidir, da melhor forma que podia (pois o calor fazia-a sentir-se muito ensonada e estúpida), se o prazer de fazer uma coroa de margaridas valia a maçada de se levantar e de ir apanhá-las, quando, de repente, um Coelho Branco com olhos cor-de-rosa apareceu a correr ao lado dela.   Não havia nada de muito extraordinário nisso; nem sequer Alice pensou que fosse assim tão estranho ouvir o Coelho dizer para consigo: "Meu Deus, meu Deus! Vou chegar atrasadíssimo!" (só mais tarde, ao pensar nisso, é que se lembrou de que devia ter estranhado o que vira, pois, na altura, tudo Lhe pareceu muito natural); mas, quando o Coelho tirou mesmo o relógio da algibeira do colete, viu as horas e continuou o seu caminho todo apressado, então é que Alice se pôs de pé num salto, pois de repente passou-lhe pela cabeça a ideia de que nunca tinha visto um Coelho de colete, com um relógio de algibeira. A arder de curiosidade, pôs-se a correr pelo campo fora atrás dele e, felizmente, foi mesmo a tempo de o ver esgueirar-se para dentro de uma grande toca que havia debaixo dos arbustos.   Logo a seguir lá desceu Alice atrás dele, sem sequer se lembrar de todo como é que havia de conseguir sair outra vez.   A toca tinha aspecto de um túnel até uma certa altura, mas de repente surgia um declive tão brusco, tão brusco, que Alice mal teve tempo para pensar em travar a sua descida quando deu consigo a cair por um poço muito fundo.                                  8   Ou o poço era muito fundo, ou ela caía muito devagarinho, mas o certo é que teve bastante tempo para olhar à sua volta enquanto descia e para se pôr a pensar no que iria acontecer a seguir.
+
+
+CONCISE SUMMARY:
+
+==========
+
+RESPONSE:
+
+Alice estava entediada ao lado da irmã, quando de repente um Coelho Branco com olhos cor-de-rosa apareceu a correr. Ela ficou curiosa e foi atrás dele, caindo por um poço muito fundo. Enquanto descia, teve tempo para olhar à sua volta e pensar no que iria acontecer a seguir.
