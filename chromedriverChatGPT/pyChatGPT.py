@@ -24,7 +24,7 @@ chatgpt_small_response = (
 )
 chatgpt_erro_advise = (
     By.XPATH,
-    '//div[starts-with(@class, "py-2 px-3 border text-gray-600 rounded-md text-sm dark:text-gray-100 border-red-500 bg-red-500/10")]',
+    '//div[starts-with(@class, "py-2 px-3 border text-gray-600 rounded-md text-sm")]',
 )
 chatgpt_alert = (By.XPATH, '//div[@role="alert"]')
 chatgpt_intro = (By.ID, 'headlessui-portal-root')
@@ -443,7 +443,7 @@ class ChatGPT:
                 self.logger.debug('Response is an error')
                 raise ValueError(response.text)
 
-        if self.driver.find_elements(*chatgpt_erro_advise) != -1:
+        if len(self.driver.find_elements(*chatgpt_erro_advise)) != 0:  # verifica se há alguma mensagem de erro
             erro = self.driver.find_elements(*chatgpt_erro_advise)[-1]
             erro_tratado = markdownify(erro.get_attribute('innerHTML')).replace('Copy code`', '`')
             self.logger.debug('Response is an error')
