@@ -22,6 +22,10 @@ chatgpt_small_response = (
     By.XPATH,
     '//div[starts-with(@class, "markdown prose w-full break-words")]',
 )
+chatgpt_erro_advise = (
+    By.XPATH,
+    '//div[starts-with(@class, "py-2 px-3 border text-gray-600 rounded-md text-sm dark:text-gray-100 border-red-500 bg-red-500/10")]',
+)
 chatgpt_alert = (By.XPATH, '//div[@role="alert"]')
 chatgpt_intro = (By.ID, 'headlessui-portal-root')
 chatgpt_login_btn = (By.XPATH, '//button[text()="Log in"]')
@@ -33,8 +37,7 @@ chatgpt_clear_convo = (By.LINK_TEXT, 'Clear conversations')
 chatgpt_confirm_clear_convo = (By.LINK_TEXT, 'Confirm clear conversations')
 chatgpt_chats_list_first_node = (
     By.XPATH,
-    '//div[substring(@class, string-length(@class) - string-length("text-sm") + 1)  = "text-sm"]//a',
-)
+    '//div[substring(@class, string-length(@class) - string-length("text-sm") + 1)  = "text-sm"]//a')
 
 chatgpt_chat_url = 'https://chat.openai.com/chat'
 
@@ -406,7 +409,7 @@ class ChatGPT:
         self.__ensure_cf()
 
         self.logger.debug('Sending message...')
-        textbox = WebDriverWait(self.driver, 120).until(
+        textbox = WebDriverWait(self.driver, 30).until(
             EC.element_to_be_clickable(chatgpt_textbox)
         )
         textbox.click()
@@ -433,11 +436,19 @@ class ChatGPT:
 
         self.logger.debug('Getting response...')
         responses = self.driver.find_elements(*chatgpt_big_response)
+
         if responses:
             response = responses[-1]
             if 'text-red' in response.get_attribute('class'):
                 self.logger.debug('Response is an error')
                 raise ValueError(response.text)
+
+        if self.driver.find_elements(*chatgpt_erro_advise) != -1:
+            erro = self.driver.find_elements(*chatgpt_erro_advise)[-1]
+            erro_tratado = markdownify(erro.get_attribute('innerHTML')).replace('Copy code`', '`')
+            self.logger.debug('Response is an error')
+            raise ValueError(erro_tratado)
+
         response = self.driver.find_elements(*chatgpt_small_response)[-1]
 
         content = markdownify(response.get_attribute('innerHTML')).replace(
