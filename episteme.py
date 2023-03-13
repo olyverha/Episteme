@@ -8,7 +8,7 @@ import re
 import PyPDF2
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
-from tkinter import messagebox
+from fpdf import FPDF
 
 
 def clear_screen():
@@ -121,13 +121,47 @@ if __name__ == '__main__':
         algoritimo_summary(0)
         tempo_atual = time.time()
         data_hora_formatada = time.strftime('%d%m%Y_%H%M%S', time.localtime(tempo_atual))
-        titulo_resumo = 'RESUMO_' + tituloDoc + '[' + data_hora_formatada + ']' + '.txt'
-        save_file('\n\n'.join(result), titulo_resumo)
+
+        # data_hora_formatada = '13032023_002247'  # apagar
+
+        titulo_resumo = tituloDoc + '_RESUMO_' + '[' + data_hora_formatada + ']' + '.txt'
+        save_file('\n\n'.join(result), 'repositorio/' + titulo_resumo)
+        time.sleep(2)  # aguarda salvar o arquivo em disco
         print(
             'Iniciando a análise do documento...\n'
         )
-        algoritimo_analisis(open_file(titulo_resumo), open_file('questions.txt'))
-        save_file('\n\n'.join(result_analise), 'ANALISE_' + tituloDoc + '[' + data_hora_formatada + ']' + '.txt')
+        algoritimo_analisis(open_file('repositorio/' + titulo_resumo), open_file('questions.txt'))
+        titulo_analise = tituloDoc + '_ANALISE_' + '[' + data_hora_formatada + ']' + '.txt'
+        save_file('\n\n'.join(result_analise), 'repositorio/' + titulo_analise)
+
+        with open('repositorio/' + titulo_resumo, 'r', encoding='utf-8') as f1, open(
+                'repositorio/' + titulo_analise, 'r', encoding='utf-8') as f2:
+            conteudo_arquivo1 = f1.read()
+            conteudo_arquivo2 = f2.read()
+
+        with open('repositorio/' + tituloDoc + '_RESUMO_ANALISE_' + '.txt', 'w') as f3:
+            f3.write('RESUMO_' + tituloDoc + '[' + data_hora_formatada + ']' + '\n' + conteudo_arquivo1 + '\n\n\n')
+            f3.write('ANALISE_' + tituloDoc + '[' + data_hora_formatada + ']' + '\n' + conteudo_arquivo2)
+
+        """
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_title('RESUMO E ANÁLISE DE ' + tituloDoc)
+
+        pdf.set_font('Arial', '', 12)
+
+        with open('repositorio/' + titulo_resumo, 'r', encoding='utf-8') as f:
+            text = f.read()
+            pdf.cell(0, 10, text, ln=True)
+
+        with open('repositorio/' + titulo_analise, 'r', encoding='utf-8') as f:
+            text = f.read()
+            pdf.cell(0, 10, text)
+
+        nomePDF = 'repositorio/RESUMO_ANALISE_' + tituloDoc + '.pdf'
+        pdf.output(nomePDF)
+        """
+
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')
     except ValueError as v:
