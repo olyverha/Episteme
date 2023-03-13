@@ -176,7 +176,7 @@ class ChatGPT:
         self.logger.debug('Initializing browser...')
         options = uc.ChromeOptions()
         options.add_argument('--window-size=1024,768')
-        #  options.add_argument('--headless')
+        options.add_argument('--headless')
         if self.__proxy:
             options.add_argument(f'--proxy-server={self.__proxy}')
         for arg in self.__chrome_args:
@@ -430,7 +430,7 @@ class ChatGPT:
             return print()
 
         self.logger.debug('Waiting for completion...')
-        WebDriverWait(self.driver, 120).until_not(
+        WebDriverWait(self.driver, 150).until_not(
             EC.presence_of_element_located(chatgpt_streaming)
         )
 
