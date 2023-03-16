@@ -1,0 +1,11 @@
+cite 3 teses que podem ser defendidas com base no {texto} abaixo:
+texto=
+
+cite um argumento e um exemplo histórico que sustenta cada uma das {tese} abaixo:
+tese=
+
+cite um fato histórico, não é necessário que o fato histórico esteja no texto, para cada uma das {tese} abaixo:
+tese=
+
+crie uma análise que ressalte uma aplicabilidade ou uma consequência ou uma importância para cada uma das {tese} abaixo:
+tese=
