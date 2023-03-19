@@ -192,8 +192,8 @@ if __name__ == '__main__':
     #  Executa o programa
     try:
         processamento_completo(0, 0)
-        #  processamento_1etapa(15)
-        #  processamento_2etapa('14032023_171735', 0)
+        #  processamento_1etapa(0)
+        #  processamento_2etapa('18032023_100301', 0)
         #  processamento_3etapa(data_hora_formatada)
 
     except seleniumexceptions.TimeoutException:
