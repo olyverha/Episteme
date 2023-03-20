@@ -1,4 +1,7 @@
 import time
+
+from PyPDF2.errors import PdfReadError
+
 from chromedriverChatGPT import ChatGPT
 from selenium.common import exceptions as seleniumexceptions
 import os
@@ -29,15 +32,23 @@ if __name__ == '__main__':
     filelocation = askopenfilename()
     tituloDoc = os.path.basename(filelocation)
     tituloDoc = os.path.splitext(tituloDoc)[0]
-
-    with open(filelocation, "rb") as f:
-        pdf = PyPDF2.PdfReader(f)
-        alltext = ""
-        for pageNum in range(len(pdf.pages)):
-            pageObj = pdf.pages[pageNum]
-            alltext += pageObj.extract_text()
-    alltext = re.sub('\\s+', ' ', alltext)
-    chunks = textwrap.wrap(alltext, 2000)
+    protocolo = ""
+    tmstp = r"\[(.*?)\]"
+    resultado = re.findall(tmstp, tituloDoc)  # verifica se o documento selecionado já foi pre-processado pelo programa
+    if resultado:
+        protocolo = resultado[0]
+        tituloDoc = tituloDoc.split('_RESUMO_')[0]  # caso se trate de um RESUMO, ajusta o nome do documento para as análises e MAPAS
+    try:
+        with open(filelocation, "rb") as f:
+            pdf = PyPDF2.PdfReader(f)
+            alltext = ""
+            for pageNum in range(len(pdf.pages)):
+                pageObj = pdf.pages[pageNum]
+                alltext += pageObj.extract_text()
+        alltext = re.sub('\\s+', ' ', alltext)
+        chunks = textwrap.wrap(alltext, 2000)
+    except PdfReadError:
+        print('O documento selecionado não é um PDF válido.')
     result = list()
     result_analise = list()
     while True:
@@ -62,13 +73,12 @@ if __name__ == '__main__':
         contador_interno = 0
 
         def consulta(_prompt):
-            resultado = chat.send_message(_prompt)
+            resultado_chat = chat.send_message(_prompt)
             event.set()  # envia o sinal para o event.wait() continuar
-            return resultado
+            return resultado_chat
 
         for chunk in chunks:
             if contador_geral > contador_interno:
-                print('Salto do contador...')
                 contador_interno += 1
             else:
                 prompt = open_file('prompt.txt').replace('<<SUMMARY>>', chunk)
@@ -88,7 +98,7 @@ if __name__ == '__main__':
                 contador_interno += 1
 
     #  Cria a análise baseada no resumo
-    def algoritimo_analisis(summary, questions, char):
+    def algoritimo_analisis(summary, prompt_princ, questions, char):
         print(
             'Iniciando a análise do documento...\n'
         )
@@ -103,15 +113,15 @@ if __name__ == '__main__':
         sentences = perguntas.split('<<NEW QUESTION>>')
 
         def consulta_analise(_prompt):
-            resultado = chat.send_message(_prompt)
+            result_chat = chat.send_message(_prompt)
             event.set()  # envia o sinal para o event.wait() continuar
-            return resultado
+            return result_chat
 
         if char > 0:
             cont = 1
             for pedaco in pedacos:
                 for sentence in sentences:
-                    prompt = open_file('prompt_analise.txt').replace('<<QUESTION>>', sentence)
+                    prompt = open_file(prompt_princ).replace('<<QUESTION>>', sentence)
                     prompt = prompt.replace('<<SUMMARY>>', pedaco)
                     prompt = prompt.encode(encoding='UTF-8', errors='ignore').decode('UTF-8')
                     summary = consulta_analise(prompt)
@@ -130,7 +140,7 @@ if __name__ == '__main__':
         else:
             print('realizando analise simples...')
             for sentence in sentences:
-                prompt = open_file('prompt_analise.txt').replace('<<QUESTION>>', sentence)
+                prompt = open_file(prompt_princ).replace('<<QUESTION>>', sentence)
                 prompt = prompt.replace('<<SUMMARY>>', resumo)
                 prompt = prompt.encode(encoding='UTF-8', errors='ignore').decode('UTF-8')
                 summary = consulta_analise(prompt)
@@ -139,9 +149,6 @@ if __name__ == '__main__':
                 text = summary['message'].strip()  # pega somente o conteúdo da mensagem sem o conversation_id
                 text = re.sub('\\s+', ' ', text)  # substitui todas as ocorrências de um ou mais espaços em branco por
                 #                                   um único espaço em branco
-                #   filename = '%s_gpt3.txt' % time()
-                #   with open('gpt3_logs/%s' % filename, 'w') as outfile:
-                #       outfile.write('PROMPT:\n\n' + prompt + '\n\n==========\n\nRESPONSE:\n\n' + text)
                 print('\n\n\n', count + 1, 'of', len(sentences), ' - ', text)
                 result_analise.append(sentence + '\n' + ':' + '\n' + text)
                 count += 1
@@ -154,7 +161,8 @@ if __name__ == '__main__':
 
     def processa_analise(data_hora_formatada, num_carcteres):
         titulo_resumo = tituloDoc + '_RESUMO_' + '[' + data_hora_formatada + ']' + '.txt'
-        algoritimo_analisis(open_file('repositorio/' + titulo_resumo), open_file('questions.txt'), num_carcteres)
+        algoritimo_analisis(open_file('repositorio/' + titulo_resumo), 'prompt_analise.txt', open_file('questions.txt'),
+                            num_carcteres)
         titulo_analise = tituloDoc + '_ANALISE_' + '[' + data_hora_formatada + ']' + '.txt'
         save_file('\n\n'.join(result_analise), 'repositorio/' + titulo_analise)
 
@@ -170,6 +178,16 @@ if __name__ == '__main__':
             f3.write('RESUMO_' + tituloDoc + '[' + data_hora_formatada + ']' + '\n\n' + conteudo_arquivo1 + '\n\n\n')
             f3.write('ANALISE_' + tituloDoc + '[' + data_hora_formatada + ']' + '\n\n' + conteudo_arquivo2)
 
+    def processa_mapa(num_carcteres):
+        titulo_resumo = tituloDoc + '_RESUMO_' + '[' + protocolo + ']' + '.txt'
+        algoritimo_analisis(open_file('repositorio/' + titulo_resumo), 'prompt_mapa_mental.txt',
+                            open_file('questions_mapa.txt'), num_carcteres)
+        titulo_mapa = tituloDoc + '_MAPA_' + '[' + protocolo + ']' + '.txt'
+        result_map = list()
+        result_map.append(tituloDoc)
+        result_map.append(result_analise)
+        save_file('\n\n'.join([str(item) for item in result_map]), 'repositorio/' + titulo_mapa)
+
     def processamento_completo(pos_inicial_resumo, num_carcteres_analise):
         tempo_atual = time.time()
         data_hora_formatada = time.strftime('%d%m%Y_%H%M%S', time.localtime(tempo_atual))
@@ -182,19 +200,20 @@ if __name__ == '__main__':
         data_hora_formatada = time.strftime('%d%m%Y_%H%M%S', time.localtime(tempo_atual))
         processa_resumo(data_hora_formatada, pos_inicial_resumo)
 
-    def processamento_2etapa(data_hora_formatada, num_carcteres):
-        processa_analise(data_hora_formatada, num_carcteres)
-        unir_resumo_analise(data_hora_formatada)
+    def processamento_2etapa(num_carcteres):
+        processa_analise(protocolo, num_carcteres)
+        unir_resumo_analise(protocolo)
 
-    def processamento_3etapa(data_hora_formatada):
-        unir_resumo_analise(data_hora_formatada)
+    def processamento_3etapa():
+        unir_resumo_analise(protocolo)
 
     #  Executa o programa
     try:
-        processamento_completo(0, 0)
+        #  processamento_completo(0, 0)
         #  processamento_1etapa(0)
-        #  processamento_2etapa('18032023_100301', 0)
-        #  processamento_3etapa(data_hora_formatada)
+        #  processamento_2etapa(0)
+        #  processamento_3etapa()
+        processa_mapa(0)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')

@@ -1,1 +1,2 @@
-faça um mapa mental do texto abaixo:
+faça <<QUESTION>> :
+<<SUMMARY>>
