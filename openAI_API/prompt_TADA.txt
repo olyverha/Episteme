@@ -1,0 +1,3 @@
+Escreva uma TESE que possa ser defendida com base no {text}, cite um ARGUMENTO que sustenta a TESE, cite um EXEMPLO HISTÓRICO que exemplifique a TESE, crie uma análise que ressalte uma aplicabilidade ou uma consequência ou uma importância da TESE:
+
+text=<<SUMMARY>>

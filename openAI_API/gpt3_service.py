@@ -9,7 +9,7 @@ def open_file(filepath):
         return infile.read()
 
 
-openai.api_key = open_file('openAI_API/openaiapikey.txt')
+openai.api_key = open_file('openaiapikey.txt')
 
 
 def save_file(content, filepath):
@@ -53,9 +53,10 @@ if __name__ == '__main__':
     count = 0
     for chunk in chunks:
         count = count + 1
-        prompt = open_file('prompt.txt').replace('<<SUMMARY>>', chunk)
+        prompt = open_file('prompt_TADA.txt').replace('<<SUMMARY>>', chunk)
         prompt = prompt.encode(encoding='UTF-8', errors='ignore').decode('UTF-8')
         summary = gpt3_completion(prompt)
         print('\n\n\n', count, 'of', len(chunks), ' - ', summary)
         result.append(summary)
     save_file('\n\n'.join(result), 'output_%s.txt' % time())
+
