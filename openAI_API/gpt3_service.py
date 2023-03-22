@@ -48,7 +48,7 @@ def gpt3_completion(_prompt, engine='text-davinci-003', temp=0.6, top_p=1.0, tok
 
 if __name__ == '__main__':
     alltext = open_file('input.txt')
-    chunks = textwrap.wrap(alltext, 2000)
+    chunks = textwrap.wrap(alltext, 3000)
     result = list()
     count = 0
     for chunk in chunks:

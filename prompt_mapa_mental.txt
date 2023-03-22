@@ -1,2 +1,21 @@
-faça <<QUESTION>> :
-<<SUMMARY>>
+escreva <<QUESTION>>, conforme a formatação
+"# Tópico Central
+## Tópico principal 1
+### Subtópico 1
+- Subtópico 1
+    -Subtópico 1
+    -Subtópico 2
+    -Subtópico 3
+### Subtópico 2
+- Subtópico 1
+    -Subtópico 1
+    -Subtópico 2
+    -Subtópico 3
+## Tópico principal 2
+### Subtópico 1
+- Subtópico 1
+    -Subtópico 1
+    -Subtópico 2
+    -Subtópico 3" :
+
+texto=<<SUMMARY>>

@@ -34,7 +34,7 @@ if __name__ == '__main__':
     tituloDoc = os.path.splitext(tituloDoc)[0]
     protocolo = ""
     tmstp = r"\[(.*?)\]"
-    resultado = re.findall(tmstp, tituloDoc)  # verifica se o documento selecionado já foi pre-processado pelo programa
+    resultado = re.findall(tmstp, tituloDoc)  # verifica se o documento selecionado já foi preprocessado pelo programa
     if resultado:
         protocolo = resultado[0]
         tituloDoc = tituloDoc.split('_RESUMO_')[0]  # caso se trate de um RESUMO, ajusta o nome do documento para as análises e MAPAS
