@@ -1,21 +1,3 @@
-escreva <<QUESTION>>, conforme a formatação
-"# Tópico Central
-## Tópico principal 1
-### Subtópico 1
-- Subtópico 1
-    -Subtópico 1
-    -Subtópico 2
-    -Subtópico 3
-### Subtópico 2
-- Subtópico 1
-    -Subtópico 1
-    -Subtópico 2
-    -Subtópico 3
-## Tópico principal 2
-### Subtópico 1
-- Subtópico 1
-    -Subtópico 1
-    -Subtópico 2
-    -Subtópico 3" :
+Preciso de um mapa mental. O mapa precisa ser escrito em XML. Escreva <<QUESTION>>:
 
 texto=<<SUMMARY>>
