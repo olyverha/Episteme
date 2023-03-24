@@ -1,1 +1,1 @@
-um mapa mental do {texto} abaixo
+The above is just an example; use your color codes for each node based on each node's complexity in terms of importance to the central theme of the text

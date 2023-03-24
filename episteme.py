@@ -53,7 +53,7 @@ if __name__ == '__main__':
     result = list()
     result_analise = list()
     while True:
-        token = open_file('token2.txt')
+        token = open_file('token.txt')
         session_token = token.replace('\n', '')
         conversation_id = ''
         chat = ChatGPT(session_token, conversation_id)
@@ -212,9 +212,15 @@ if __name__ == '__main__':
     #  Executa o programa
     try:
         #  processamento_completo(0, 0)
-        #  processamento_1etapa(7)
+
+        # parâmetro que aponta o último pedaço resumido de maneira a recomeçar pelo seguinte
+        #  processamento_1etapa(0)
+
         #  processamento_2etapa(0)
+
         #  processamento_3etapa()
+
+        #  parâmetro para caso o resumo seja muito grande, informar a quantidade de caracteres analisados por mapa
         processa_mapa(0)
 
     except seleniumexceptions.TimeoutException:
