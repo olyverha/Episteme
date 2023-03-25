@@ -1,3 +1,3 @@
-Can you give the mindmap in PlantUML format about {texto}. Keep it structured from the core central topic branching out to other domains and sub-domains. Add the start and end mindmap tags and keep it expanding on one side. Add color codes to mind map nodes using the format *[#FFFF00], i.e. the colors inside the square brackets must come after the asterisk. <<QUESTION>>:
+Can you give the mindmap in PlantUML format about {texto}. Keep it structured from the core central topic branching out to other domains and sub-domains. Add the start and end mindmap tags and keep it expanding on one side. <<QUESTION>>:
 
 texto=<<SUMMARY>>

@@ -214,7 +214,7 @@ if __name__ == '__main__':
         #  processamento_completo(0, 0)
 
         # parâmetro que aponta o último pedaço resumido de maneira a recomeçar pelo seguinte
-        #  processamento_1etapa(0)
+        # processamento_1etapa(0)
 
         #  processamento_2etapa(0)
 
