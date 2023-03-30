@@ -1,7 +1,5 @@
 import time
-
 from PyPDF2.errors import PdfReadError
-
 from chromedriverChatGPT import ChatGPT
 from selenium.common import exceptions as seleniumexceptions
 import os
@@ -47,13 +45,14 @@ if __name__ == '__main__':
                 pageObj = pdf.pages[pageNum]
                 alltext += pageObj.extract_text()
         alltext = re.sub('\\s+', ' ', alltext)
-        chunks = textwrap.wrap(alltext, 2000)
+        chunks = textwrap.wrap(alltext, 2000)  # quebra o texto PDF em pedaços de 2000 caracteres
     except PdfReadError:
         print('O documento selecionado não é um PDF válido.')
     result = list()
     result_analise = list()
+    result_tada = list()
     while True:
-        token = open_file('token.txt')
+        token = open_file('token2.txt')
         session_token = token.replace('\n', '')
         conversation_id = ''
         chat = ChatGPT(session_token, conversation_id)
@@ -146,6 +145,33 @@ if __name__ == '__main__':
                 result_analise.append(sentence + '\n' + ':' + '\n' + text)
                 count += 1
 
+    def algoritimo_tada(summary, prompt_tada, char):
+        print(
+            'Iniciando a análise TADA...\n'
+        )
+        event = threading.Event()
+        resumo = summary
+        resumo = re.sub('\\s+', ' ', resumo)
+        chunks_tada = textwrap.wrap(resumo, char)
+        count = 0
+
+        def consulta_tada(_prompt):
+            result_chat = chat.send_message(_prompt)
+            event.set()  # envia o sinal para o event.wait() continuar
+            return result_chat
+
+        for chunk_t in chunks_tada:
+            prompt = open_file(prompt_tada).replace('<<SUMMARY>>', chunk_t)
+            prompt = prompt.encode(encoding='UTF-8', errors='ignore').decode('UTF-8')
+            tada = consulta_tada(prompt)
+            event.wait()  # aguarda o sinal para continuar
+            event.clear()  # limpa o sinal para a próxima iteração
+            text = tada['message'].strip()  # pega somente o conteúdo da mensagem sem o conversation_id
+            text = re.sub('\\s+', ' ', text)  # substitui todas as ocorrências de um ou mais espaços em branco por
+            #                                   um único espaço em branco
+            print('\n\n\n', count + 1, 'of', len(chunks_tada), ' - ', text)
+            result_tada.append(text)
+            count += 1
 
     def processa_resumo(data_hora_formatada, pos_inicial_resumo):
         algoritimo_summary(pos_inicial_resumo)  # apontar o último pedaço resumido de maneira a recomeçar pelo seguinte
@@ -186,6 +212,15 @@ if __name__ == '__main__':
         save_file('\n\n'.join([str(item) for item in result_map]), 'repositorio/' + titulo_mapa)
 
 
+    def processa_tada(num_carcteres):
+        titulo_resumo = tituloDoc + '_RESUMO_' + '[' + protocolo + ']' + '.txt'
+        algoritimo_tada(open_file('repositorio/' + titulo_resumo), 'prompt_TADA.txt', num_carcteres)
+        titulo_tada = tituloDoc + '_TADA_' + '[' + protocolo + ']' + '.txt'
+        result_t = list()
+        result_t.append(tituloDoc)
+        result_t.append(result_tada)
+        save_file('\n\n'.join([str(item) for item in result_t]), 'repositorio/' + titulo_tada)
+
     def processamento_completo(pos_inicial_resumo, num_carcteres_analise):
         tempo_atual = time.time()
         data_hora_formatada = time.strftime('%d%m%Y_%H%M%S', time.localtime(tempo_atual))
@@ -214,14 +249,17 @@ if __name__ == '__main__':
         #  processamento_completo(0, 0)
 
         # parâmetro que aponta o último pedaço resumido de maneira a recomeçar pelo seguinte
-        # processamento_1etapa(0)
+        processamento_1etapa(0)
 
         #  processamento_2etapa(0)
 
         #  processamento_3etapa()
 
         #  parâmetro para caso o resumo seja muito grande, informar a quantidade de caracteres analisados por mapa
-        processa_mapa(0)
+        #  processa_mapa(00)
+
+        #  parâmetro que indica qual a quantidade de caracteres a serem analisados para cada TADA no texto
+        #  processa_tada(8500)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')

@@ -53,7 +53,7 @@ if __name__ == '__main__':
     count = 0
     for chunk in chunks:
         count = count + 1
-        prompt = open_file('prompt_TADA.txt').replace('<<SUMMARY>>', chunk)
+        prompt = open_file('../prompt_TADA.txt').replace('<<SUMMARY>>', chunk)
         prompt = prompt.encode(encoding='UTF-8', errors='ignore').decode('UTF-8')
         summary = gpt3_completion(prompt)
         print('\n\n\n', count, 'of', len(chunks), ' - ', summary)

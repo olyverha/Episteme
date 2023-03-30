@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from markdownify import markdownify
 from threading import Thread
-import undetected_chromedriver as uc
+import undetected_chromedriver as uc  # pip install undetected_chromedriver
 import platform
 import logging
 import weakref
