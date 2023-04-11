@@ -259,7 +259,7 @@ if __name__ == '__main__':
         #  processa_mapa(0)
 
         #  parâmetro que indica qual a quantidade de caracteres a serem analisados para cada TADA no texto
-        #  processa_tada(3000)
+        #  processa_tada(3500)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')
