@@ -249,7 +249,7 @@ if __name__ == '__main__':
         #  processamento_completo(0, 0)
 
         #  parâmetro que aponta o último pedaço resumido de maneira a recomeçar pelo seguinte
-        processamento_1etapa(0)
+        #  processamento_1etapa(0)
 
         #  processamento_2etapa(0)
 
@@ -259,7 +259,7 @@ if __name__ == '__main__':
         #  processa_mapa(0)
 
         #  parâmetro que indica qual a quantidade de caracteres a serem analisados para cada TADA no texto
-        #  processa_tada(3500)
+        processa_tada(2500)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')

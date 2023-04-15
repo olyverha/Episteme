@@ -39,7 +39,9 @@ chatgpt_chats_list_first_node = (
     By.XPATH,
     '//div[substring(@class, string-length(@class) - string-length("text-sm") + 1)  = "text-sm"]//a')
 
-chatgpt_chat_url = 'https://chat.openai.com/chat'
+chatgpt_chat_url = 'https://chat.openai.com'
+# variável que checa se a tela de Boas-vindas aparece após a primeira mensagem respondida
+check_blocking = 0
 
 
 class ChatGPT:
@@ -405,9 +407,12 @@ class ChatGPT:
         :param message: Message to send
         :return: Dictionary with keys `message` and `conversation_id`
         """
+        global check_blocking
         self.logger.debug('Ensuring Cloudflare cookies...')
         self.__ensure_cf()
-
+        if check_blocking == 1:
+            self.__check_blocking_elements()
+        check_blocking += 1
         self.logger.debug('Sending message...')
         textbox = WebDriverWait(self.driver, 30).until(
             EC.element_to_be_clickable(chatgpt_textbox)
