@@ -52,7 +52,7 @@ if __name__ == '__main__':
     result_analise = list()
     result_tada = list()
     while True:
-        token = open_file('token2.txt')
+        token = open_file('token.txt')
         session_token = token.replace('\n', '')
         conversation_id = ''
         chat = ChatGPT(session_token, conversation_id)
