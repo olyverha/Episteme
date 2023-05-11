@@ -52,7 +52,7 @@ if __name__ == '__main__':
     result_analise = list()
     result_tada = list()
     while True:
-        token = open_file('token.txt')
+        token = open_file('token2.txt')
         session_token = token.replace('\n', '')
         conversation_id = ''
         chat = ChatGPT(session_token, conversation_id)
@@ -259,7 +259,7 @@ if __name__ == '__main__':
         #  processa_mapa(0)
 
         #  parâmetro que indica qual a quantidade de caracteres a serem analisados para cada TADA no texto
-        processa_tada(3500)
+        processa_tada(4600)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')
