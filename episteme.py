@@ -244,9 +244,9 @@ if __name__ == '__main__':
         unir_resumo_analise(protocolo)
 
 
-    #  Executa o programa
+    #  Executa o programa. Pode-se processar a partir de qualquer etapa, basta descomentar.
     try:
-        #  processamento_completo(0, 0)
+          processamento_completo(0, 0)
 
         #  parâmetro que aponta o último pedaço resumido de maneira a recomeçar pelo seguinte
         #  processamento_1etapa(0)
@@ -259,7 +259,7 @@ if __name__ == '__main__':
         #  processa_mapa(0)
 
         #  parâmetro que indica qual a quantidade de caracteres a serem analisados para cada TADA no texto
-        processa_tada(4600)
+        #  processa_tada(4600)
 
     except seleniumexceptions.TimeoutException:
         print('.Limite de tempo de espera da requisição atingido. Execute novamente o programa.')
